@@ -34,7 +34,10 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [
+            BASE_DIR,  # Asosiy loyiha papkasini qo'shamiz
+            BASE_DIR / 'templates',  # templates papkasini ham qo'shamiz
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

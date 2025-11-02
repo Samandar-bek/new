@@ -8,7 +8,8 @@ import json
 from .models import Student, Test, Question, Answer, TestResult, StudentActivity, StudentLogin
 
 def index(request):
-    return render(request, 'home/index.html')
+    """Asosiy sahifa - endi index.html ni asosiy papkadan oladi"""
+    return render(request, 'index.html')  # O'zgartirildi
 
 @csrf_exempt
 def student_login_credentials(request):
@@ -107,7 +108,7 @@ def admin_dashboard(request):
             'active_tests_count': tests.filter(is_active=True).count(),
             'completed_tests_count': test_results.count(),
         }
-        return render(request, 'home/admin.html', context)
+        return render(request, 'admin.html', context)  # O'zgartirildi
     except Exception as e:
         print(f"Admin dashboard error: {str(e)}")
         context = {
@@ -117,10 +118,10 @@ def admin_dashboard(request):
             'active_tests_count': 0,
             'completed_tests_count': 0,
         }
-        return render(request, 'home/admin.html', context)
+        return render(request, 'admin.html', context)  # O'zgartirildi
 
 def student_dashboard(request):
-    """Student paneli - MUAMMONI YECHADIGAN ASOSIY FUNKSIYA"""
+    """Student paneli"""
     if not request.session.get('student_id'):
         messages.error(request, "Iltimos, avval tizimga kiring")
         return redirect('index')
@@ -129,7 +130,7 @@ def student_dashboard(request):
         student_id = request.session['student_id']
         student = get_object_or_404(Student, id=student_id)
         
-        # ASOSIY MUAMMO YECHIMI: FAQAT FAOL TESTLARNI OLISH
+        # FAQAT FAOL TESTLARNI OLISH
         tests = Test.objects.filter(is_active=True).prefetch_related(
             'questions',
             'questions__answers'
@@ -146,10 +147,10 @@ def student_dashboard(request):
         context = {
             'student_name': request.session.get('student_name', 'Student'),
             'student': student,
-            'tests': tests,  # Bu testlar student.html ga uzatiladi
+            'tests': tests,
             'student_results': student_results,
         }
-        return render(request, 'home/student.html', context)
+        return render(request, 'student.html', context)  # O'zgartirildi
         
     except Exception as e:
         print(f"Student dashboard error: {str(e)}")
@@ -159,7 +160,7 @@ def student_dashboard(request):
             'tests': [],
             'student_results': [],
         }
-        return render(request, 'home/student.html', context)
+        return render(request, 'student.html', context)  # O'zgartirildi
 
 def logout(request):
     """Chiqish"""
@@ -313,7 +314,7 @@ def get_ranking(request):
             'id', 'ism', 'familya', 'avg_score', 'tests_taken'
         )
         
-        return JsonResponse({'success': False, 'ranking': list(ranking)})
+        return JsonResponse({'success': True, 'ranking': list(ranking)})  # Tuzatildi: success True bo'lishi kerak
     except Exception as e:
         return JsonResponse({'success': False, 'error': str(e)})
 
