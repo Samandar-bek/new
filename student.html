@@ -1,0 +1,1828 @@
+    <!DOCTYPE html>
+    <html lang="uz">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Student Dashboard - Test Pro</title>
+        <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+        <style>
+            :root {
+                --primary: #6366f1;
+                --primary-dark: #4f46e5;
+                --primary-light: #818cf8;
+                --secondary: #8b5cf6;
+                --success: #10b981;
+                --success-dark: #059669;
+                --warning: #f59e0b;
+                --warning-dark: #d97706;
+                --danger: #ef4444;
+                --danger-dark: #dc2626;
+                --info: #06b6d4;
+                --dark: #1e293b;
+                --darker: #0f172a;
+                --darkest: #020617;
+                --light: #f8fafc;
+                --gray: #64748b;
+                --gray-light: #cbd5e1;
+                --glass: rgba(255, 255, 255, 0.08);
+                --glass-border: rgba(255, 255, 255, 0.12);
+                --glass-dark: rgba(0, 0, 0, 0.2);
+                --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+                --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+                --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            body {
+                background: linear-gradient(135deg, var(--darkest) 0%, var(--darker) 50%, var(--dark) 100%);
+                color: var(--light);
+                min-height: 100vh;
+                overflow-x: hidden;
+                line-height: 1.6;
+            }
+
+            .app-container {
+                display: flex;
+                min-height: 100vh;
+            }
+
+            /* Sidebar Styles - Mobile Optimized */
+            .sidebar {
+                width: 280px;
+                background: linear-gradient(180deg, var(--dark) 0%, var(--darker) 100%);
+                height: 100vh;
+                position: fixed;
+                left: 0;
+                top: 0;
+                border-right: 1px solid var(--glass-border);
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                z-index: 1000;
+                box-shadow: var(--shadow-xl);
+                overflow-y: auto;
+                display: flex;
+                flex-direction: column;
+                transform: translateX(-100%);
+            }
+
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+
+            .sidebar-header {
+                padding: 20px;
+                border-bottom: 1px solid var(--glass-border);
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                position: sticky;
+                top: 0;
+                background: var(--dark);
+                z-index: 1;
+            }
+
+            .logo {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .logo-icon {
+                width: 40px;
+                height: 40px;
+                background: linear-gradient(135deg, var(--primary), var(--secondary));
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 20px;
+                flex-shrink: 0;
+            }
+
+            .logo-text {
+                font-size: 20px;
+                font-weight: 700;
+                background: linear-gradient(135deg, var(--light), var(--gray-light));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .sidebar-menu {
+                padding: 16px 0;
+                flex: 1;
+            }
+
+            .menu-group {
+                margin-bottom: 8px;
+            }
+
+            .menu-label {
+                padding: 12px 20px;
+                font-size: 11px;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                color: rgba(255, 255, 255, 0.5);
+                font-weight: 600;
+            }
+
+            .menu-item {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 14px 20px;
+                color: rgba(255, 255, 255, 0.7);
+                text-decoration: none;
+                transition: all 0.3s ease;
+                border-left: 3px solid transparent;
+                cursor: pointer;
+                border-radius: 0 12px 12px 0;
+                margin: 2px 0;
+                user-select: none;
+            }
+
+            .menu-item:hover {
+                background: rgba(255, 255, 255, 0.05);
+                color: var(--light);
+                border-left-color: var(--primary);
+            }
+
+            .menu-item.active {
+                background: linear-gradient(90deg, rgba(99, 102, 241, 0.15), transparent);
+                color: var(--light);
+                border-left-color: var(--primary);
+            }
+
+            .menu-item i {
+                font-size: 20px;
+                width: 24px;
+                text-align: center;
+                flex-shrink: 0;
+            }
+
+            .menu-text {
+                font-weight: 500;
+                flex: 1;
+            }
+
+            .menu-badge {
+                background: var(--primary);
+                color: white;
+                padding: 4px 8px;
+                border-radius: 12px;
+                font-size: 11px;
+                font-weight: 600;
+                animation: pulse 2s infinite;
+                flex-shrink: 0;
+            }
+
+            @keyframes pulse {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(1.05); }
+            }
+
+            /* Main Content */
+            .main-content {
+                flex: 1;
+                margin-left: 0;
+                transition: all 0.3s ease;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            /* Top Header - Mobile Optimized */
+            .top-header {
+                height: 70px;
+                background: rgba(30, 41, 59, 0.95);
+                backdrop-filter: blur(20px);
+                border-bottom: 1px solid var(--glass-border);
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 20px;
+                position: sticky;
+                top: 0;
+                z-index: 999;
+                flex-shrink: 0;
+            }
+
+            .header-left {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+            }
+
+            .toggle-sidebar {
+                background: none;
+                border: none;
+                color: var(--light);
+                font-size: 24px;
+                cursor: pointer;
+                padding: 8px;
+                border-radius: 8px;
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .page-title h1 {
+                font-size: 20px;
+                font-weight: 700;
+                background: linear-gradient(135deg, var(--light), var(--gray-light));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .header-right {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+            }
+
+            .user-menu {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 8px 12px;
+                border-radius: 12px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            .user-avatar {
+                width: 36px;
+                height: 36px;
+                background: linear-gradient(135deg, var(--primary), var(--secondary));
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 600;
+                flex-shrink: 0;
+                font-size: 14px;
+            }
+
+            .user-info {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .user-name {
+                font-weight: 600;
+                font-size: 14px;
+            }
+
+            .user-role {
+                font-size: 11px;
+                color: rgba(255, 255, 255, 0.6);
+            }
+
+            /* Content Area - Mobile Optimized */
+            .content-area {
+                padding: 20px;
+                flex: 1;
+                overflow-y: auto;
+            }
+
+            /* Tab Content */
+            .tab-content {
+                display: none;
+            }
+
+            .tab-content.active {
+                display: block;
+                animation: fadeIn 0.3s ease;
+            }
+
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+
+            /* Dashboard Stats - Mobile Optimized */
+            .dashboard-stats {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 16px;
+                margin-bottom: 24px;
+            }
+
+            .stat-card {
+                background: linear-gradient(135deg, var(--glass) 0%, var(--glass-dark) 100%);
+                border: 1px solid var(--glass-border);
+                border-radius: 16px;
+                padding: 20px;
+                backdrop-filter: blur(20px);
+                box-shadow: var(--shadow-lg);
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .stat-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 4px;
+                background: linear-gradient(90deg, var(--primary), var(--secondary));
+            }
+
+            .stat-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 12px;
+            }
+
+            .stat-icon {
+                width: 40px;
+                height: 40px;
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 20px;
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            .stat-info {
+                text-align: right;
+            }
+
+            .stat-value {
+                font-size: 24px;
+                font-weight: 700;
+                margin-bottom: 4px;
+                background: linear-gradient(135deg, var(--light), var(--gray-light));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .stat-label {
+                font-size: 12px;
+                color: rgba(255, 255, 255, 0.7);
+            }
+
+            /* Content Sections */
+            .content-section {
+                background: linear-gradient(135deg, var(--glass) 0%, var(--glass-dark) 100%);
+                border: 1px solid var(--glass-border);
+                border-radius: 16px;
+                padding: 20px;
+                backdrop-filter: blur(20px);
+                box-shadow: var(--shadow-lg);
+                margin-bottom: 24px;
+            }
+
+            .section-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 20px;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .section-title {
+                font-size: 18px;
+                font-weight: 600;
+                background: linear-gradient(135deg, var(--light), var(--gray-light));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .section-actions {
+                display: flex;
+                gap: 8px;
+            }
+
+            .btn {
+                padding: 12px 20px;
+                border: none;
+                border-radius: 12px;
+                font-size: 14px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                user-select: none;
+                touch-action: manipulation;
+            }
+
+            .btn-primary {
+                background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+                color: white;
+            }
+
+            .btn-primary:active {
+                transform: scale(0.98);
+            }
+
+            .btn-success {
+                background: linear-gradient(135deg, var(--success), var(--success-dark));
+                color: white;
+            }
+
+            /* Test Cards - Mobile Optimized */
+            .tests-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                gap: 16px;
+            }
+
+            .test-card {
+                background: linear-gradient(135deg, var(--glass) 0%, var(--glass-dark) 100%);
+                border: 1px solid var(--glass-border);
+                border-radius: 16px;
+                padding: 20px;
+                backdrop-filter: blur(20px);
+                transition: all 0.3s ease;
+            }
+
+            .test-card:active {
+                transform: scale(0.98);
+            }
+
+            .test-header {
+                display: flex;
+                align-items: flex-start;
+                justify-content: space-between;
+                margin-bottom: 16px;
+            }
+
+            .test-title {
+                font-size: 16px;
+                font-weight: 600;
+                margin-bottom: 8px;
+            }
+
+            .test-description {
+                color: rgba(255, 255, 255, 0.7);
+                font-size: 14px;
+                line-height: 1.4;
+            }
+
+            .test-badge {
+                background: var(--primary);
+                color: white;
+                padding: 4px 10px;
+                border-radius: 20px;
+                font-size: 11px;
+                font-weight: 600;
+                flex-shrink: 0;
+            }
+
+            .test-badge.inactive {
+                background: var(--gray);
+            }
+
+            .test-info {
+                display: flex;
+                gap: 12px;
+                margin-bottom: 16px;
+                flex-wrap: wrap;
+            }
+
+            .test-info-item {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 13px;
+                color: rgba(255, 255, 255, 0.7);
+            }
+
+            .test-actions {
+                display: flex;
+                gap: 8px;
+            }
+
+            .test-actions .btn {
+                padding: 10px 16px;
+                font-size: 13px;
+                flex: 1;
+                justify-content: center;
+            }
+
+            /* Mobile Styles */
+            @media (max-width: 768px) {
+                .dashboard-stats {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+
+                .tests-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .content-area {
+                    padding: 16px;
+                }
+
+                .top-header {
+                    padding: 0 16px;
+                    height: 60px;
+                }
+
+                .page-title h1 {
+                    font-size: 18px;
+                }
+
+                .user-info {
+                    display: none;
+                }
+
+                .section-header {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+
+                .section-actions {
+                    width: 100%;
+                    justify-content: space-between;
+                }
+
+                .btn {
+                    padding: 10px 16px;
+                    font-size: 13px;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .dashboard-stats {
+                    grid-template-columns: 1fr;
+                }
+
+                .test-info {
+                    flex-direction: column;
+                    gap: 8px;
+                }
+
+                .test-actions {
+                    flex-direction: column;
+                }
+            }
+
+            /* Empty state */
+            .empty-state {
+                text-align: center;
+                padding: 40px 20px;
+                color: rgba(255, 255, 255, 0.6);
+            }
+
+            .empty-state i {
+                font-size: 48px;
+                margin-bottom: 16px;
+                opacity: 0.5;
+            }
+
+            /* Activity items */
+            .activity-item {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 12px;
+                background: rgba(255, 255, 255, 0.05);
+                border-radius: 8px;
+                margin-bottom: 8px;
+                transition: all 0.3s ease;
+            }
+
+            .activity-icon {
+                width: 32px;
+                height: 32px;
+                border-radius: 8px;
+                background: rgba(99, 102, 241, 0.2);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+            }
+
+            .activity-icon i {
+                color: #6366f1;
+            }
+
+            /* Data table - Mobile Optimized */
+            .data-table {
+                width: 100%;
+                background: var(--glass);
+                border-radius: 12px;
+                overflow: hidden;
+            }
+
+            .table-header {
+                background: rgba(255, 255, 255, 0.05);
+                padding: 16px;
+                border-bottom: 1px solid var(--glass-border);
+            }
+
+            .table-scroll {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                min-width: 600px;
+            }
+
+            th, td {
+                padding: 12px 16px;
+                text-align: left;
+                border-bottom: 1px solid var(--glass-border);
+                font-size: 14px;
+            }
+
+            th {
+                background: rgba(255, 255, 255, 0.05);
+                font-weight: 600;
+                white-space: nowrap;
+            }
+
+            /* Modal Styles - Mobile Optimized */
+            .modal {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                z-index: 2000;
+                justify-content: center;
+                align-items: center;
+                backdrop-filter: blur(10px);
+                padding: 20px;
+            }
+
+            .modal-content {
+                background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
+                border: 1px solid var(--glass-border);
+                border-radius: 20px;
+                padding: 24px;
+                width: 100%;
+                max-width: 500px;
+                max-height: 90vh;
+                overflow-y: auto;
+                box-shadow: var(--shadow-xl);
+            }
+
+            .modal-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 20px;
+            }
+
+            .modal-title {
+                font-size: 20px;
+                font-weight: 700;
+                background: linear-gradient(135deg, var(--light), var(--gray-light));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .close-modal {
+                background: none;
+                border: none;
+                color: var(--light);
+                font-size: 24px;
+                cursor: pointer;
+                padding: 4px;
+                border-radius: 6px;
+                transition: all 0.3s ease;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* Test Modal Styles - Mobile Optimized */
+            .test-modal-content {
+                max-width: 100%;
+            }
+
+            .test-header-info {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+                padding: 16px;
+                background: rgba(255, 255, 255, 0.05);
+                border-radius: 12px;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .test-timer {
+                font-size: 16px;
+                font-weight: 600;
+                color: var(--warning);
+            }
+
+            .question-container {
+                background: rgba(255, 255, 255, 0.05);
+                border-radius: 12px;
+                padding: 16px;
+                margin-bottom: 16px;
+            }
+
+            .question-text {
+                font-size: 16px;
+                font-weight: 600;
+                margin-bottom: 16px;
+                color: var(--light);
+                line-height: 1.5;
+            }
+
+            .options-container {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .option-item {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 14px;
+                background: rgba(255, 255, 255, 0.03);
+                border: 1px solid var(--glass-border);
+                border-radius: 8px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                user-select: none;
+            }
+
+            .option-item:active {
+                transform: scale(0.98);
+            }
+
+            .option-item.selected {
+                background: rgba(99, 102, 241, 0.15);
+                border-color: var(--primary);
+            }
+
+            .option-radio {
+                width: 20px;
+                height: 20px;
+                accent-color: var(--primary);
+            }
+
+            .option-text {
+                flex: 1;
+                color: var(--light);
+                font-size: 14px;
+            }
+
+            .test-navigation {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-top: 20px;
+                padding-top: 16px;
+                border-top: 1px solid var(--glass-border);
+                gap: 8px;
+            }
+
+            .test-navigation .btn {
+                flex: 1;
+                justify-content: center;
+                padding: 12px;
+            }
+
+            .question-counter {
+                font-size: 14px;
+                color: rgba(255, 255, 255, 0.7);
+                text-align: center;
+                flex: 2;
+            }
+
+            /* Progress Bar */
+            .progress-bar {
+                width: 100%;
+                height: 6px;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 3px;
+                overflow: hidden;
+                margin: 12px 0;
+            }
+
+            .progress-fill {
+                height: 100%;
+                background: linear-gradient(90deg, var(--primary), var(--secondary));
+                border-radius: 3px;
+                transition: width 0.3s ease;
+            }
+
+            /* Toast Styles - Mobile Optimized */
+            .toast-container {
+                position: fixed;
+                top: 80px;
+                right: 16px;
+                left: 16px;
+                z-index: 1001;
+            }
+
+            .toast {
+                background: var(--glass);
+                border: 1px solid var(--glass-border);
+                border-radius: 12px;
+                padding: 14px;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                backdrop-filter: blur(10px);
+                margin-bottom: 8px;
+                animation: slideInDown 0.3s ease;
+            }
+
+            .toast.success {
+                border-left: 4px solid var(--success);
+            }
+
+            .toast.error {
+                border-left: 4px solid var(--danger);
+            }
+
+            .toast.warning {
+                border-left: 4px solid var(--warning);
+            }
+
+            .toast.info {
+                border-left: 4px solid var(--info);
+            }
+
+            @keyframes slideInDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-100%);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            /* Loading Spinner */
+            .loading-spinner {
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+                border: 3px solid rgba(255, 255, 255, 0.3);
+                border-radius: 50%;
+                border-top-color: var(--primary);
+                animation: spin 1s ease-in-out infinite;
+            }
+
+            @keyframes spin {
+                to { transform: rotate(360deg); }
+            }
+
+            /* Results Styles - Mobile Optimized */
+            .results-score {
+                width: 100px;
+                height: 100px;
+                background: linear-gradient(135deg, var(--success), var(--primary));
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 24px;
+                font-weight: 700;
+                margin: 0 auto 16px;
+                color: white;
+            }
+
+            .results-stats {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+                margin: 20px 0;
+            }
+
+            .stat-box {
+                text-align: center;
+                padding: 12px;
+                background: rgba(255, 255, 255, 0.05);
+                border-radius: 12px;
+            }
+
+            .stat-value {
+                font-size: 20px;
+                font-weight: 700;
+                margin-bottom: 4px;
+            }
+
+            .stat-label {
+                font-size: 12px;
+                color: rgba(255, 255, 255, 0.7);
+            }
+
+            /* Mobile-first responsive design */
+            @media (min-width: 769px) {
+                .sidebar {
+                    transform: translateX(0);
+                }
+                
+                .main-content {
+                    margin-left: 280px;
+                }
+                
+                .toggle-sidebar {
+                    display: none;
+                }
+                
+                .toast-container {
+                    right: 32px;
+                    left: auto;
+                    top: 100px;
+                }
+                
+                .toast {
+                    min-width: 300px;
+                }
+            }
+
+            /* Touch improvements */
+            @media (hover: none) and (pointer: coarse) {
+                .menu-item:hover {
+                    background: transparent;
+                    transform: none;
+                }
+                
+                .test-card:hover {
+                    transform: none;
+                }
+                
+                .btn:hover {
+                    transform: none;
+                }
+                
+                .option-item:hover {
+                    background: rgba(255, 255, 255, 0.03);
+                    border-color: var(--glass-border);
+                }
+            }
+        </style>
+    </head>
+    <body>
+        {% csrf_token %}
+        <div class="app-container">
+            <!-- Sidebar -->
+            <div class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <i class='bx bx-brain'></i>
+                        </div>
+                        <div class="logo-text">Test Pro</div>
+                    </div>
+                </div>
+
+                <div class="sidebar-menu">
+                    <div class="menu-group">
+                        <div class="menu-label">Asosiy</div>
+                        <a href="#" class="menu-item active" data-tab="dashboard">
+                            <i class='bx bx-home-alt'></i>
+                            <span class="menu-text">Dashboard</span>
+                        </a>
+                        <a href="#" class="menu-item" data-tab="tests">
+                            <i class='bx bx-file'></i>
+                            <span class="menu-text">Testlar</span>
+                            <span class="menu-badge" id="testsCount">{{ tests|length }}</span>
+                        </a>
+                        <a href="#" class="menu-item" data-tab="results">
+                            <i class='bx bx-bar-chart-alt-2'></i>
+                            <span class="menu-text">Natijalar</span>
+                        </a>
+                    </div>
+
+                    <div class="menu-group">
+                        <div class="menu-label">Hisob</div>
+                        <a href="#" class="menu-item" onclick="showProfile()">
+                            <i class='bx bx-user'></i>
+                            <span class="menu-text">Profil</span>
+                        </a>
+                        <a href="#" class="menu-item" onclick="showRanking()">
+                            <i class='bx bx-trophy'></i>
+                            <span class="menu-text">Reyting</span>
+                        </a>
+                    </div>
+
+                    <div class="menu-group">
+                        <div class="menu-label">Sozlamalar</div>
+                        <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+                            {% csrf_token %}
+                        </form>
+                        <a href="#" class="menu-item" onclick="document.getElementById('logout-form').submit();">
+                            <i class='bx bx-log-out'></i>
+                            <span class="menu-text">Chiqish</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="main-content" id="mainContent">
+                <!-- Top Header -->
+                <div class="top-header">
+                    <div class="header-left">
+                        <button class="toggle-sidebar" onclick="toggleSidebar()">
+                            <i class='bx bx-menu'></i>
+                        </button>
+                        <div class="page-title">
+                            <h1 id="pageTitle">Dashboard</h1>
+                        </div>
+                    </div>
+
+                    <div class="header-right">
+                        <div class="user-menu">
+                            <div class="user-avatar">{{ student_name|slice:":1"|upper }}</div>
+                            <div class="user-info">
+                                <div class="user-name" id="studentName">{{ student_name }}</div>
+                                <div class="user-role">O'quvchi</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Area -->
+                <div class="content-area">
+                    <!-- Dashboard Tab -->
+                    <div id="dashboard" class="tab-content active">
+                        <div class="dashboard-stats">
+                            <div class="stat-card">
+                                <div class="stat-header">
+                                    <div class="stat-icon">
+                                        <i class='bx bx-check-circle'></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <div class="stat-value" id="completedTests">{{ student_results|length }}</div>
+                                        <div class="stat-label">Bajarilgan</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="stat-card">
+                                <div class="stat-header">
+                                    <div class="stat-icon">
+                                        <i class='bx bx-trophy'></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <div class="stat-value" id="averageScore">
+                                            {% if student_results %}
+                                                {% with total=student_results|length %}
+                                                    {% with sum=student_results|dictsortreversed:"score"|first %}
+                                                        {{ sum.score|floatformat:1 }}
+                                                    {% endwith %}
+                                                {% endwith %}
+                                            {% else %}
+                                                0
+                                            {% endif %}
+                                        </div>
+                                        <div class="stat-label">Yuqori Ball</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="stat-card">
+                                <div class="stat-header">
+                                    <div class="stat-icon">
+                                        <i class='bx bx-time'></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <div class="stat-value" id="totalTime">{{ tests|length }}</div>
+                                        <div class="stat-label">Mavjud</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="stat-card">
+                                <div class="stat-header">
+                                    <div class="stat-icon">
+                                        <i class='bx bx-bar-chart'></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <div class="stat-value" id="ranking">
+                                            {% if student_results %}#1{% else %}#0{% endif %}
+                                        </div>
+                                        <div class="stat-label">Reyting</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="content-section">
+                            <div class="section-header">
+                                <div class="section-title">So'nggi Faoliyat</div>
+                            </div>
+                            <div id="recentActivity">
+                                {% for result in student_results|slice:":5" %}
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <i class='bx bx-check'></i>
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 500;">{{ result.test.title }}</div>
+                                        <div style="font-size: 12px; color: rgba(255,255,255,0.6);">
+                                            {{ result.score|floatformat:1 }} ball • {{ result.completed_at|date:"d.m.Y H:i" }}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% empty %}
+                                <div class="empty-state">
+                                    <i class='bx bx-time'></i>
+                                    <p>Hozircha faoliyat mavjud emas</p>
+                                    <p style="font-size: 14px; margin-top: 8px; color: rgba(255,255,255,0.5);">
+                                        Birinchi testni bajarishni boshlang!
+                                    </p>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tests Tab -->
+                    <div id="tests" class="tab-content">
+                        <div class="content-section">
+                            <div class="section-header">
+                                <div class="section-title">Mavjud Testlar</div>
+                                <div class="section-actions">
+                                    <button class="btn btn-primary" onclick="loadTests()">
+                                        <i class='bx bx-refresh'></i> Yangilash
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Testlar ro'yxati -->
+                            <div class="tests-grid" id="testsGrid">
+                                {% for test in tests %}
+                                <div class="test-card">
+                                    <div class="test-header">
+                                        <div>
+                                            <div class="test-title">{{ test.title }}</div>
+                                            <div class="test-description">
+                                                {{ test.description|default:"Tavsif mavjud emas" }}
+                                            </div>
+                                        </div>
+                                        <div class="test-badge {% if test.is_active %}active{% else %}inactive{% endif %}">
+                                            {% if test.is_active %}Faol{% else %}Nofaol{% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="test-info">
+                                        <div class="test-info-item">
+                                            <i class='bx bx-time'></i>
+                                            <span>{{ test.time_limit }} daq</span>
+                                        </div>
+                                        <div class="test-info-item">
+                                            <i class='bx bx-list-ul'></i>
+                                            <span>{{ test.questions.count }} savol</span>
+                                        </div>
+                                        <div class="test-info-item">
+                                            <i class='bx bx-bar-chart'></i>
+                                            <span>{{ test.max_score }} ball</span>
+                                        </div>
+                                    </div>
+                                    <div class="test-actions">
+                                        {% if test.is_active %}
+                                        <button class="btn btn-primary" onclick="startTest({{ test.id }})">
+                                            <i class='bx bx-play-circle'></i> Boshlash
+                                        </button>
+                                        {% else %}
+                                        <button class="btn" style="background: rgba(255,255,255,0.1);" disabled>
+                                            <i class='bx bx-block'></i> Nofaol
+                                        </button>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% empty %}
+                                <div class="empty-state">
+                                    <i class='bx bx-file-blank'></i>
+                                    <p>Hozircha testlar mavjud emas</p>
+                                    <p style="font-size: 14px; margin-top: 8px; color: rgba(255,255,255,0.5);">
+                                        Admin tomonidan test qo'shilishini kuting
+                                    </p>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Results Tab -->
+                    <div id="results" class="tab-content">
+                        <div class="content-section">
+                            <div class="section-header">
+                                <div class="section-title">Mening Natijalarim</div>
+                            </div>
+                            <div class="data-table">
+                                <div class="table-header">
+                                    <h3>Barcha Natijalar</h3>
+                                </div>
+                                <div class="table-scroll">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Test</th>
+                                                <th>Ball</th>
+                                                <th>To'g'ri</th>
+                                                <th>Jami</th>
+                                                <th>Sana</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="resultsTable">
+                                            {% for result in student_results %}
+                                            <tr>
+                                                <td>{{ result.test.title }}</td>
+                                                <td><strong>{{ result.score|floatformat:1 }}</strong></td>
+                                                <td>{{ result.correct_answers }}/{{ result.total_questions }}</td>
+                                                <td>{{ result.total_questions }}</td>
+                                                <td>{{ result.completed_at|date:"d.m.Y" }}</td>
+                                            </tr>
+                                            {% empty %}
+                                            <tr>
+                                                <td colspan="5">
+                                                    <div class="empty-state">
+                                                        <i class='bx bx-bar-chart-alt-2'></i>
+                                                        <p>Hozircha natijalar mavjud emas</p>
+                                                        <p style="font-size: 14px; margin-top: 8px; color: rgba(255,255,255,0.5);">
+                                                            Testlarni bajarishni boshlang!
+                                                        </p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Container -->
+        <div class="toast-container" id="toastContainer"></div>
+
+        <!-- Profile Modal -->
+        <div class="modal" id="profileModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">Mening Profilim</div>
+                    <button class="close-modal" onclick="closeModal('profileModal')">
+                        <i class='bx bx-x'></i>
+                    </button>
+                </div>
+                <div style="text-align: center; padding: 20px;">
+                    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 700; margin: 0 auto 16px;">
+                        {{ student_name|slice:":1"|upper }}
+                    </div>
+                    <h3 style="margin-bottom: 16px; color: var(--light);">{{ student_name }}</h3>
+                    
+                    <div style="text-align: left; margin: 16px 0;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; padding: 12px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                            <span style="font-weight: 600; color: rgba(255,255,255,0.8); min-width: 100px;">Ism-Familya:</span>
+                            <span style="color: var(--light);">{{ student_name }}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; padding: 12px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                            <span style="font-weight: 600; color: rgba(255,255,255,0.8); min-width: 100px;">ID:</span>
+                            <span style="color: var(--light);">#{{ request.session.student_id }}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; padding: 12px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                            <span style="font-weight: 600; color: rgba(255,255,255,0.8); min-width: 100px;">Bajarilgan:</span>
+                            <span style="color: var(--light);">{{ student_results|length }} ta</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; padding: 12px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                            <span style="font-weight: 600; color: rgba(255,255,255,0.8); min-width: 100px;">Yuqori Ball:</span>
+                            <span style="color: var(--light);">
+                                {% if student_results %}
+                                    {% with total=student_results|length %}
+                                        {% with sum=student_results|dictsortreversed:"score"|first %}
+                                            {{ sum.score|floatformat:1 }}
+                                        {% endwith %}
+                                    {% endwith %}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 12px; margin-top: 20px; justify-content: center;">
+                        <button class="btn" onclick="closeModal('profileModal')" style="background: rgba(255,255,255,0.1); flex: 1;">
+                            Yopish
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Modal -->
+        <div class="modal" id="testModal">
+            <div class="modal-content test-modal-content">
+                <div class="modal-header">
+                    <div class="modal-title" id="testModalTitle">Test</div>
+                    <div class="test-timer" id="testTimer">00:00</div>
+                    <button class="close-modal" onclick="closeTestModal()">
+                        <i class='bx bx-x'></i>
+                    </button>
+                </div>
+                
+                <div class="test-header-info">
+                    <div>
+                        <div style="font-weight: 600; font-size: 14px;" id="testInfo"></div>
+                        <div class="question-counter" id="questionCounter">Savol 0/0</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div id="testQuestionsContainer">
+                    <!-- Savollar shu yerda ko'rsatiladi -->
+                </div>
+
+                <div class="test-navigation">
+                    <button class="btn" onclick="previousQuestion()" id="prevBtn" style="background: rgba(255,255,255,0.1);">
+                        <i class='bx bx-chevron-left'></i>
+                    </button>
+                    <div class="question-counter" id="navQuestionCounter">1/1</div>
+                    <button class="btn btn-primary" onclick="nextQuestion()" id="nextBtn">
+                        <i class='bx bx-chevron-right'></i>
+                    </button>
+                    <button class="btn btn-success" onclick="submitTest()" id="submitBtn" style="display: none; flex: 2;">
+                        <i class='bx bx-check'></i> Yakunlash
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Modal -->
+        <div class="modal" id="resultsModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">Test Natijasi</div>
+                    <button class="close-modal" onclick="closeModal('resultsModal')">
+                        <i class='bx bx-x'></i>
+                    </button>
+                </div>
+                <div style="text-align: center; padding: 20px;">
+                    <div class="results-score" id="resultsScore">0</div>
+                    <h3 style="margin-bottom: 8px; color: var(--light); font-size: 18px;" id="resultsTitle">Test Yakunlandi</h3>
+                    <div style="color: rgba(255,255,255,0.7); margin-bottom: 20px; font-size: 14px;" id="resultsDetails">
+                        To'g'ri javoblar: 0/0
+                    </div>
+                    
+                    <div class="results-stats">
+                        <div class="stat-box">
+                            <div class="stat-value" id="correctAnswers" style="color: var(--success);">0</div>
+                            <div class="stat-label">To'g'ri</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value" id="totalQuestions" style="color: var(--primary);">0</div>
+                            <div class="stat-label">Jami</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value" id="scoreValue" style="color: var(--warning);">0</div>
+                            <div class="stat-label">Ball</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value" id="percentage" style="color: var(--info);">0%</div>
+                            <div class="stat-label">Foiz</div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 8px; margin-top: 20px; justify-content: center;">
+                        <button class="btn" onclick="closeModal('resultsModal')" style="background: rgba(255,255,255,0.1); flex: 1;">
+                            Yopish
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // App State
+            const appState = {
+                currentTab: 'dashboard',
+                currentTest: null,
+                currentQuestionIndex: 0,
+                answers: {},
+                timer: null,
+                timeLeft: 0,
+                questions: [],
+                testStartTime: null
+            };
+
+            // Initialize App
+            document.addEventListener('DOMContentLoaded', function() {
+                initializeApp();
+            });
+
+            function initializeApp() {
+                initEventListeners();
+                updateActiveTab();
+                
+                // Auto-close sidebar on mobile when clicking outside
+                document.addEventListener('click', function(e) {
+                    const sidebar = document.getElementById('sidebar');
+                    const toggleBtn = document.querySelector('.toggle-sidebar');
+                    
+                    if (window.innerWidth <= 768 && 
+                        !sidebar.contains(e.target) && 
+                        e.target !== toggleBtn && 
+                        !toggleBtn.contains(e.target)) {
+                        sidebar.classList.remove('mobile-open');
+                    }
+                });
+            }
+
+            function initEventListeners() {
+                // Tab navigation
+                const tabItems = document.querySelectorAll('.menu-item[data-tab]');
+                tabItems.forEach(item => {
+                    item.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const tabId = this.getAttribute('data-tab');
+                        switchTab(tabId);
+                        // Close sidebar on mobile after tab selection
+                        if (window.innerWidth <= 768) {
+                            document.getElementById('sidebar').classList.remove('mobile-open');
+                        }
+                    });
+                });
+
+                // Close modal when clicking outside
+                document.querySelectorAll('.modal').forEach(modal => {
+                    modal.addEventListener('click', function(e) {
+                        if (e.target === this) {
+                            if (this.id === 'testModal') {
+                                if (confirm('Testni yakunlamoqchimisiz?')) {
+                                    closeTestModal();
+                                }
+                            } else {
+                                this.style.display = 'none';
+                            }
+                        }
+                    });
+                });
+
+                // Swipe support for mobile
+                let startX = 0;
+                document.addEventListener('touchstart', function(e) {
+                    startX = e.touches[0].clientX;
+                });
+
+                document.addEventListener('touchend', function(e) {
+                    const endX = e.changedTouches[0].clientX;
+                    const diffX = startX - endX;
+                    
+                    // Swipe left to close sidebar
+                    if (diffX > 50 && window.innerWidth <= 768) {
+                        document.getElementById('sidebar').classList.remove('mobile-open');
+                    }
+                    
+                    // Swipe right to open sidebar
+                    if (diffX < -50 && window.innerWidth <= 768 && startX < 50) {
+                        document.getElementById('sidebar').classList.add('mobile-open');
+                    }
+                });
+            }
+
+            function updateActiveTab() {
+                const currentPath = window.location.pathname;
+                let activeTab = 'dashboard';
+                
+                if (currentPath.includes('tests')) activeTab = 'tests';
+                else if (currentPath.includes('results')) activeTab = 'results';
+                
+                switchTab(activeTab);
+            }
+
+            // Sidebar Toggle
+            function toggleSidebar() {
+                const sidebar = document.getElementById('sidebar');
+                sidebar.classList.toggle('mobile-open');
+            }
+
+            // Tab Navigation
+            function switchTab(tabId) {
+                // Remove active class from all menu items
+                document.querySelectorAll('.menu-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Remove active class from all tab contents
+                document.querySelectorAll('.tab-content').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                
+                // Add active class to clicked menu item
+                const activeItems = document.querySelectorAll(`[data-tab="${tabId}"]`);
+                activeItems.forEach(item => {
+                    item.classList.add('active');
+                });
+                
+                // Add active class to corresponding tab
+                const activeTab = document.getElementById(tabId);
+                if (activeTab) {
+                    activeTab.classList.add('active');
+                    
+                    // Update page title
+                    const pageTitle = activeItems[0]?.querySelector('.menu-text')?.textContent || 'Dashboard';
+                    document.getElementById('pageTitle').textContent = pageTitle;
+                    
+                    appState.currentTab = tabId;
+                }
+            }
+
+            // Profile Functions
+            function showProfile() {
+                document.getElementById('profileModal').style.display = 'flex';
+                if (window.innerWidth <= 768) {
+                    document.getElementById('sidebar').classList.remove('mobile-open');
+                }
+            }
+
+            function closeModal(modalId) {
+                document.getElementById(modalId).style.display = 'none';
+            }
+
+            // Ranking Functions
+            function showRanking() {
+                if (window.innerWidth <= 768) {
+                    document.getElementById('sidebar').classList.remove('mobile-open');
+                }
+                showToast('Reyting funksiyasi tez orada qo\'shiladi!', 'info');
+            }
+
+            // Test Functions
+            async function startTest(testId) {
+                try {
+                    showToast('Test yuklanmoqda...', 'info');
+                    
+                    const response = await fetch(`/api/get-test-questions/${testId}/`);
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        appState.currentTest = {
+                            id: testId,
+                            title: data.test_title,
+                            timeLimit: data.time_limit
+                        };
+                        appState.questions = data.questions;
+                        appState.currentQuestionIndex = 0;
+                        appState.answers = {};
+                        appState.timeLeft = data.time_limit * 60;
+                        appState.testStartTime = new Date();
+                        
+                        openTestModal();
+                    } else {
+                        showToast('Test yuklanmadi: ' + (data.error || 'Noma\'lum xatolik'), 'error');
+                    }
+                } catch (error) {
+                    console.error('Test boshlashda xatolik:', error);
+                    showToast('Test boshlashda xatolik! Internet aloqasini tekshiring.', 'error');
+                }
+            }
+
+            function openTestModal() {
+                document.getElementById('testModalTitle').textContent = appState.currentTest.title;
+                document.getElementById('testInfo').textContent = 
+                    `${appState.questions.length} savol • ${appState.currentTest.timeLimit} daqiqa`;
+                
+                updateQuestionDisplay();
+                startTimer();
+                document.getElementById('testModal').style.display = 'flex';
+            }
+
+            function closeTestModal() {
+                if (appState.timer) {
+                    clearInterval(appState.timer);
+                    appState.timer = null;
+                }
+                document.getElementById('testModal').style.display = 'none';
+                
+                // Reset test state
+                appState.currentTest = null;
+                appState.questions = [];
+                appState.currentQuestionIndex = 0;
+                appState.answers = {};
+            }
+
+            function startTimer() {
+                updateTimerDisplay();
+                appState.timer = setInterval(() => {
+                    appState.timeLeft--;
+                    updateTimerDisplay();
+                    
+                    if (appState.timeLeft <= 0) {
+                        clearInterval(appState.timer);
+                        showToast('Vaqt tugadi! Test avtomatik yakunlanadi.', 'warning');
+                        setTimeout(submitTest, 1000);
+                    }
+                }, 1000);
+            }
+
+            function updateTimerDisplay() {
+                const minutes = Math.floor(appState.timeLeft / 60);
+                const seconds = appState.timeLeft % 60;
+                const timerElement = document.getElementById('testTimer');
+                timerElement.textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                // Change color when time is running out
+                timerElement.className = 'test-timer';
+                if (appState.timeLeft < 300) {
+                    timerElement.classList.add('warning');
+                }
+                if (appState.timeLeft < 60) {
+                    timerElement.classList.add('danger');
+                }
+            }
+
+            function updateQuestionDisplay() {
+                const currentQuestion = appState.questions[appState.currentQuestionIndex];
+                const container = document.getElementById('testQuestionsContainer');
+                
+                // Progress
+                const progress = ((appState.currentQuestionIndex + 1) / appState.questions.length) * 100;
+                document.getElementById('progressFill').style.width = `${progress}%`;
+                document.getElementById('questionCounter').textContent = 
+                    `Savol ${appState.currentQuestionIndex + 1}/${appState.questions.length}`;
+                document.getElementById('navQuestionCounter').textContent = 
+                    `${appState.currentQuestionIndex + 1}/${appState.questions.length}`;
+                
+                // Question HTML
+                container.innerHTML = `
+                    <div class="question-container">
+                        <div class="question-text">${currentQuestion.text}</div>
+                        <div class="options-container">
+                            ${currentQuestion.answers.map((answer, index) => `
+                                <div class="option-item ${appState.answers[currentQuestion.id] === answer.id ? 'selected' : ''}" 
+                                    onclick="selectAnswer(${currentQuestion.id}, ${answer.id})">
+                                    <input type="radio" class="option-radio" 
+                                        name="question_${currentQuestion.id}" 
+                                        ${appState.answers[currentQuestion.id] === answer.id ? 'checked' : ''}
+                                        onchange="selectAnswer(${currentQuestion.id}, ${answer.id})">
+                                    <div class="option-text">${String.fromCharCode(65 + index)}. ${answer.text}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                // Navigation buttons
+                document.getElementById('prevBtn').style.display = 
+                    appState.currentQuestionIndex === 0 ? 'none' : 'flex';
+                document.getElementById('nextBtn').style.display = 
+                    appState.currentQuestionIndex === appState.questions.length - 1 ? 'none' : 'flex';
+                document.getElementById('submitBtn').style.display = 
+                    appState.currentQuestionIndex === appState.questions.length - 1 ? 'flex' : 'none';
+            }
+
+            function selectAnswer(questionId, answerId) {
+                appState.answers[questionId] = answerId;
+                updateQuestionDisplay();
+            }
+
+            function previousQuestion() {
+                if (appState.currentQuestionIndex > 0) {
+                    appState.currentQuestionIndex--;
+                    updateQuestionDisplay();
+                }
+            }
+
+            function nextQuestion() {
+                if (appState.currentQuestionIndex < appState.questions.length - 1) {
+                    appState.currentQuestionIndex++;
+                    updateQuestionDisplay();
+                }
+            }
+
+            async function submitTest() {
+                try {
+                    showToast('Test yakunlanmoqda...', 'info');
+                    
+                    const response = await fetch('/api/submit-test/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': getCSRFToken()
+                        },
+                        body: JSON.stringify({
+                            test_id: appState.currentTest.id,
+                            answers: appState.answers
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        closeTestModal();
+                        showResultsModal(data);
+                        // Refresh the page after 2 seconds to update results
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 2000);
+                    } else {
+                        showToast('Test yakunlanmadi: ' + (data.error || 'Noma\'lum xatolik'), 'error');
+                    }
+                } catch (error) {
+                    console.error('Test yakunlashda xatolik:', error);
+                    showToast('Test yakunlashda xatolik! Internet aloqasini tekshiring.', 'error');
+                }
+            }
+
+            function showResultsModal(data) {
+                const score = parseFloat(data.score);
+                const percentage = ((data.correct_answers / data.total_questions) * 100).toFixed(1);
+                
+                // Set score color based on performance
+                let scoreColor = 'var(--danger)';
+                if (score >= 80) scoreColor = 'var(--success)';
+                else if (score >= 60) scoreColor = 'var(--warning)';
+                
+                document.getElementById('resultsScore').textContent = score.toFixed(1);
+                document.getElementById('resultsScore').style.background = `linear-gradient(135deg, ${scoreColor}, var(--primary))`;
+                document.getElementById('resultsTitle').textContent = 
+                    `"${appState.currentTest.title}" Testi Yakunlandi`;
+                document.getElementById('resultsDetails').textContent = 
+                    `To'g'ri javoblar: ${data.correct_answers}/${data.total_questions}`;
+                document.getElementById('correctAnswers').textContent = data.correct_answers;
+                document.getElementById('totalQuestions').textContent = data.total_questions;
+                document.getElementById('scoreValue').textContent = score.toFixed(1);
+                document.getElementById('percentage').textContent = percentage + '%';
+                
+                document.getElementById('resultsModal').style.display = 'flex';
+            }
+
+            // Utility Functions
+            function loadTests() {
+                showToast('Testlar yangilanmoqda...', 'info');
+                window.location.reload();
+            }
+
+            function getCSRFToken() {
+                return document.querySelector('[name=csrfmiddlewaretoken]').value;
+            }
+
+            // Toast Notifications
+            function showToast(message, type = 'info') {
+                const toastContainer = document.getElementById('toastContainer');
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                
+                const icons = {
+                    'success': 'bx-check-circle',
+                    'error': 'bx-error-circle',
+                    'warning': 'bx-error-circle',
+                    'info': 'bx-info-circle'
+                };
+                
+                toast.innerHTML = `
+                    <i class='bx ${icons[type]}'></i>
+                    <span>${message}</span>
+                `;
+                
+                toastContainer.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.style.animation = 'slideInDown 0.3s ease reverse';
+                    setTimeout(() => {
+                        toast.remove();
+                    }, 300);
+                }, 4000);
+            }
+
+            // Prevent zoom on double tap (iOS)
+            document.addEventListener('touchstart', function(e) {
+                if (e.touches.length > 1) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function(e) {
+                const now = (new Date()).getTime();
+                if (now - lastTouchEnd <= 300) {
+                    e.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, false);
+        </script>
+    </body>
+    </html>

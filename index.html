@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Pro - Premium Test Platformasi</title>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary: #8b5cf6;
+            --success: #10b981;
+            --success-dark: #059669;
+            --warning: #f59e0b;
+            --warning-dark: #d97706;
+            --danger: #ef4444;
+            --danger-dark: #dc2626;
+            --info: #06b6d4;
+            --dark: #1e293b;
+            --darker: #0f172a;
+            --darkest: #020617;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --gray-light: #cbd5e1;
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --glass-dark: rgba(0, 0, 0, 0.2);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--darkest) 0%, var(--darker) 50%, var(--dark) 100%);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .shape {
+            position: absolute;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .shape:nth-child(3) {
+            width: 150px;
+            height: 150px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* Login Container */
+        .login-container {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: var(--glass);
+            backdrop-filter: blur(40px);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 50px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: var(--shadow-xl);
+            animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .login-card:hover::before {
+            left: 100%;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeIn 1s ease 0.2s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 36px;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .logo h1 {
+            font-size: 42px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--light), var(--gray-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .logo p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 18px;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+            position: relative;
+            animation: slideInLeft 0.6s ease both;
+        }
+
+        .form-group:nth-child(1) { animation-delay: 0.3s; }
+        .form-group:nth-child(2) { animation-delay: 0.4s; }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 20px 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--glass-border);
+            border-radius: 15px;
+            color: var(--light);
+            font-size: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+            font-size: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus + .input-icon {
+            color: var(--secondary);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 20px;
+            border: none;
+            border-radius: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+            animation: slideInRight 0.6s ease 0.5s both;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        .btn-telegram {
+            background: linear-gradient(135deg, #0088cc, #006699);
+            margin-top: 15px;
+        }
+
+        .btn-telegram:hover {
+            box-shadow: 0 10px 30px rgba(0, 136, 204, 0.4);
+        }
+
+        .admin-note {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: var(--glass);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            animation: fadeIn 0.8s ease 0.6s both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .admin-note::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(135deg, var(--warning), var(--warning-dark));
+        }
+
+        .register-section {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .register-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .register-link:hover {
+            color: var(--primary-light);
+            text-decoration: underline;
+        }
+
+        .telegram-info {
+            background: rgba(0, 136, 204, 0.1);
+            border: 1px solid rgba(0, 136, 204, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .telegram-info i {
+            color: #0088cc;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .messages {
+            margin-bottom: 25px;
+            animation: slideDown 0.6s ease both;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert {
+            padding: 18px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 500;
+            margin-bottom: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.1);
+            color: #fca5a5;
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: #86efac;
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .alert-info {
+            background: rgba(6, 182, 212, 0.1);
+            color: #67e8f9;
+            border-color: rgba(6, 182, 212, 0.3);
+        }
+
+        /* Loading animation */
+        .loading-spinner {
+            width: 24px;
+            height: 24px;
+            border: 3px solid transparent;
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Toast notifications */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+        }
+
+        .toast {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            backdrop-filter: blur(10px);
+            margin-bottom: 12px;
+            animation: slideInRight 0.3s ease;
+            min-width: 300px;
+        }
+
+        .toast.success {
+            border-left: 4px solid var(--success);
+        }
+
+        .toast.error {
+            border-left: 4px solid var(--danger);
+        }
+
+        .toast.info {
+            border-left: 4px solid var(--info);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .login-card {
+                padding: 30px 25px;
+                margin: 10px;
+            }
+            
+            .logo h1 {
+                font-size: 36px;
+            }
+            
+            .logo-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 28px;
+            }
+
+            .toast {
+                min-width: auto;
+                right: 10px;
+                left: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 25px 20px;
+            }
+            
+            .logo h1 {
+                font-size: 32px;
+            }
+            
+            .form-input {
+                padding: 18px 20px;
+            }
+            
+            .btn {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- CSRF Token for Django -->
+    {% csrf_token %}
+    
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <div class="login-container">
+        <div class="login-card">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class='bx bx-brain'></i>
+                </div>
+                <h1>Test Pro</h1>
+                <p>Premium Test Platformasi</p>
+            </div>
+            
+            <!-- Messages -->
+            <div class="messages" id="messages">
+                <!-- Messages will be displayed here -->
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm">
+                <div class="form-group">
+                    <input type="text" class="form-input" name="username" placeholder="Login" required id="usernameInput" value="user">
+                    <i class='bx bx-user input-icon'></i>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-input" name="password" placeholder="Parol" required id="passwordInput" value="1234">
+                    <i class='bx bx-lock-alt input-icon'></i>
+                </div>
+                <button type="submit" class="btn" id="submitBtn">
+                    <span>Tizimga Kirish</span>
+                    <div class="loading-spinner" id="loadingSpinner"></div>
+                </button>
+            </form>
+
+            <!-- Register Section -->
+            <div class="register-section">
+                <p>Hali hisobingiz yo'qmi?</p>
+                <button class="btn btn-telegram" onclick="goToTelegram()">
+                    <i class='bx bxl-telegram'></i>
+                    <span>Ro'yxatdan o'tish</span>
+                </button>
+            </div>
+
+    <script>
+        // App State
+        const appState = {
+            loginAttempts: 0,
+            isBlocked: false,
+            blockTime: 0
+        };
+
+        // Demo credentials
+        const demoCredentials = {
+            username: "user",
+            password: "1234"
+        };
+
+        // Telegram username
+        const telegramUsername = "Master_Dragon_1";
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+            checkBlockStatus();
+            
+            // Auto-fill demo credentials for easier testing
+            document.getElementById('usernameInput').value = demoCredentials.username;
+            document.getElementById('passwordInput').value = demoCredentials.password;
+        });
+
+        // Setup all event listeners
+        function setupEventListeners() {
+            // Login form submissions
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleLogin();
+            });
+
+            // Enter key to submit
+            document.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleLogin();
+                }
+            });
+
+            // Auto-focus on username input
+            document.getElementById('usernameInput').focus();
+        }
+
+        // Go to Telegram
+        function goToTelegram() {
+            showToast('Telegramga yo\'naltirilmoqda...', 'info');
+            
+            // Telegram link
+            const telegramLink = `https://t.me/${telegramUsername}`;
+            
+            // Yangi oynada ochish
+            setTimeout(() => {
+                window.open(telegramLink, '_blank');
+                
+                // Qo'shimcha ma'lumot
+                showToast(`@${telegramUsername} ga murojaat qiling!`, 'success');
+            }, 1000);
+        }
+
+        // Check if user is blocked
+        function checkBlockStatus() {
+            const blockedUntil = localStorage.getItem('blockedUntil');
+            if (blockedUntil && Date.now() < parseInt(blockedUntil)) {
+                appState.isBlocked = true;
+                appState.blockTime = parseInt(blockedUntil) - Date.now();
+                showBlockMessage();
+            } else {
+                localStorage.removeItem('blockedUntil');
+                localStorage.removeItem('loginAttempts');
+            }
+        }
+
+        // Show block message
+        function showBlockMessage() {
+            const minutes = Math.ceil(appState.blockTime / 60000);
+            showToast(`Siz bloklangansiz! ${minutes} daqiqadan keyin qayta urinib ko'ring.`, 'error');
+            document.getElementById('submitBtn').disabled = true;
+            
+            const countdown = setInterval(() => {
+                appState.blockTime -= 1000;
+                if (appState.blockTime <= 0) {
+                    clearInterval(countdown);
+                    appState.isBlocked = false;
+                    document.getElementById('submitBtn').disabled = false;
+                    localStorage.removeItem('blockedUntil');
+                    showToast('Blok olindi! Endi tizimga kira olasiz.', 'success');
+                }
+            }, 1000);
+        }
+
+        // Handle login
+        async function handleLogin() {
+            if (appState.isBlocked) {
+                showToast('Siz hali bloklangansiz!', 'error');
+                return;
+            }
+
+            const username = document.getElementById('usernameInput').value.trim();
+            const password = document.getElementById('passwordInput').value.trim();
+            
+            if (!username || !password) {
+                showToast('Iltimos, login va parolni kiriting!', 'error');
+                return;
+            }
+
+            // Show loading
+            const submitBtn = document.getElementById('submitBtn');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const btnText = submitBtn.querySelector('span');
+            
+            submitBtn.disabled = true;
+            loadingSpinner.style.display = 'block';
+            btnText.textContent = 'Kirish amalga oshirilmoqda...';
+
+            try {
+                // Demo login tekshirish
+                if (username === demoCredentials.username && password === demoCredentials.password) {
+                    // Admin panelga yo'naltirish
+                    showToast('Muvaffaqiyatli kirish! Admin panelga yo\'naltirilmoqda...', 'success');
+                    
+                    // Session ma'lumotlarini o'rnatish
+                    await setAdminSession();
+                    
+                    // Admin panelga o'tish
+                    setTimeout(() => {
+                        window.location.href = '/admin-dashboard/';
+                    }, 1500);
+                } else {
+                    // Agar demo login bo'lmasa, Django login endpointiga so'rov yuborish
+                    await submitToDjangoLogin(username, password);
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showToast('Kirishda xatolik yuz berdi!', 'error');
+                handleFailedLogin();
+            } finally {
+                submitBtn.disabled = false;
+                loadingSpinner.style.display = 'none';
+                btnText.textContent = 'Tizimga Kirish';
+            }
+        }
+
+        // Set admin session
+        async function setAdminSession() {
+            try {
+                const response = await fetch('/api/set-admin-session/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCSRFToken(),
+                    },
+                    body: JSON.stringify({
+                        is_admin: true,
+                        admin_name: 'Admin User'
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Session setting failed');
+                }
+                
+                const data = await response.json();
+                if (!data.success) {
+                    throw new Error(data.error || 'Session setting failed');
+                }
+                
+                return data;
+            } catch (error) {
+                console.warn('Session setting failed:', error);
+                // Session o'rnatish muvaffaqiyatsiz bo'lsa ham davom etamiz
+                return { success: true };
+            }
+        }
+
+        // Submit to Django login
+        async function submitToDjangoLogin(username, password) {
+            const data = {
+                username: username,
+                password: password
+            };
+            
+            const response = await fetch('/api/student-login/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken(),
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const result = await response.json();
+            
+            if (result.success) {
+                showToast(result.message || 'Muvaffaqiyatli kirish! Yo\'naltirilmoqda...', 'success');
+                setTimeout(() => {
+                    if (result.is_admin) {
+                        window.location.href = '/admin-dashboard/';
+                    } else {
+                        window.location.href = '/student-dashboard/';
+                    }
+                }, 1500);
+            } else {
+                showToast(result.error || 'Login yoki parol noto\'g\'ri!', 'error');
+                handleFailedLogin();
+            }
+        }
+
+        // CSRF token olish
+        function getCSRFToken() {
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+            return csrfToken ? csrfToken.value : '';
+        }
+
+        // Handle failed login attempts
+        function handleFailedLogin() {
+            appState.loginAttempts++;
+            localStorage.setItem('loginAttempts', appState.loginAttempts);
+            
+            if (appState.loginAttempts >= 3) {
+                const blockTime = 5 * 60 * 1000; // 5 minutes
+                localStorage.setItem('blockedUntil', Date.now() + blockTime);
+                appState.isBlocked = true;
+                appState.blockTime = blockTime;
+                showBlockMessage();
+            }
+        }
+
+        // Show toast message
+        function showToast(message, type = 'info') {
+            const toastContainer = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const icons = {
+                'success': 'bx-check-circle',
+                'error': 'bx-error-circle',
+                'info': 'bx-info-circle'
+            };
+            
+            toast.innerHTML = `
+                <i class='bx ${icons[type]}'></i>
+                <span>${message}</span>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                toast.style.animation = 'slideInRight 0.3s ease reverse';
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.remove();
+                    }
+                }, 300);
+            }, 5000);
+        }
+
+        // Load login attempts from localStorage
+        const savedAttempts = localStorage.getItem('loginAttempts');
+        if (savedAttempts) {
+            appState.loginAttempts = parseInt(savedAttempts);
+        }
+
+        // Prevent form resubmission
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+    </script>
+</body>
+</html>
