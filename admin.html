@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Test Pro</title>
+    <title>Admin Dashboard</title>
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <style>
         :root {
@@ -47,26 +47,117 @@
             line-height: 1.6;
         }
 
+        /* Premium Background Animations */
+        .premium-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .gradient-orbs {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.15;
+            animation: orbFloat 20s infinite linear;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--primary);
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 300px;
+            height: 300px;
+            background: var(--secondary);
+            top: 60%;
+            right: 10%;
+            animation-delay: 5s;
+        }
+
+        .orb-3 {
+            width: 350px;
+            height: 350px;
+            background: var(--success);
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 10s;
+        }
+
+        @keyframes orbFloat {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+            25% {
+                transform: translate(50px, -30px) scale(1.1);
+            }
+            50% {
+                transform: translate(-30px, 40px) scale(0.9);
+            }
+            75% {
+                transform: translate(-50px, -20px) scale(1.05);
+            }
+        }
+
+        .animated-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, transparent 79px, rgba(99, 102, 241, 0.03) 79px, rgba(99, 102, 241, 0.03) 80px, transparent 80px),
+                linear-gradient(transparent 79px, rgba(99, 102, 241, 0.03) 79px, rgba(99, 102, 241, 0.03) 80px, transparent 80px);
+            background-size: 80px 80px;
+            animation: gridMove 40s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(80px, 80px);
+            }
+        }
+
         .app-container {
             min-height: 100vh;
             display: flex;
+            position: relative;
         }
 
         /* Sidebar Styles */
         .sidebar {
             width: 280px;
-            background: linear-gradient(180deg, var(--dark) 0%, var(--darker) 100%);
+            background: linear-gradient(180deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%);
             height: 100vh;
             position: fixed;
             left: 0;
             top: 0;
             border-right: 1px solid var(--glass-border);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 1000;
             box-shadow: var(--shadow-xl);
             overflow-y: auto;
             display: flex;
             flex-direction: column;
+            backdrop-filter: blur(20px);
         }
 
         .sidebar.collapsed {
@@ -81,8 +172,9 @@
             gap: 12px;
             position: sticky;
             top: 0;
-            background: var(--dark);
+            background: rgba(30, 41, 59, 0.95);
             z-index: 1;
+            backdrop-filter: blur(20px);
         }
 
         .logo {
@@ -102,15 +194,62 @@
             justify-content: center;
             font-size: 20px;
             flex-shrink: 0;
+            animation: logoFloat 3s ease-in-out infinite;
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            animation: logoShine 3s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { 
+                transform: translateY(0) rotate(0deg);
+                box-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
+            }
+            50% { 
+                transform: translateY(-8px) rotate(5deg);
+                box-shadow: 0 0 50px rgba(99, 102, 241, 0.6);
+            }
+        }
+
+        @keyframes logoShine {
+            0% {
+                transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            }
+            100% {
+                transform: translateX(100%) translateY(100%) rotate(45deg);
+            }
         }
 
         .logo-text {
             font-size: 20px;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--light), var(--gray-light));
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--light), var(--primary-light));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             white-space: nowrap;
+            text-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+            animation: textGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes textGlow {
+            from {
+                text-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+            }
+            to {
+                text-shadow: 0 0 30px rgba(99, 102, 241, 0.6), 0 0 40px rgba(139, 92, 246, 0.4);
+            }
         }
 
         .sidebar.collapsed .logo-text {
@@ -151,35 +290,65 @@
             padding: 14px 24px;
             color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             border-left: 3px solid transparent;
             cursor: pointer;
             border-radius: 0 12px 12px 0;
             margin: 2px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .menu-item:hover::before {
+            left: 100%;
         }
 
         .menu-item:hover {
-            background: rgba(255, 255, 255, 0.05);
+            background: linear-gradient(90deg, rgba(99, 102, 241, 0.1), transparent);
             color: var(--light);
             border-left-color: var(--primary);
-            transform: translateX(4px);
+            transform: translateX(8px);
+            box-shadow: inset 0 0 20px rgba(99, 102, 241, 0.1);
         }
 
         .menu-item.active {
-            background: linear-gradient(90deg, rgba(99, 102, 241, 0.15), transparent);
+            background: linear-gradient(90deg, rgba(99, 102, 241, 0.2), transparent);
             color: var(--light);
             border-left-color: var(--primary);
+            box-shadow: inset 0 0 30px rgba(99, 102, 241, 0.15);
         }
 
         .menu-item i {
             font-size: 20px;
             width: 24px;
             text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .menu-item:hover i {
+            transform: scale(1.2) rotate(5deg);
+            color: var(--primary-light);
         }
 
         .menu-text {
             font-weight: 500;
             white-space: nowrap;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
         }
 
         .sidebar.collapsed .menu-text {
@@ -188,26 +357,34 @@
         }
 
         .menu-badge {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             padding: 4px 8px;
             border-radius: 12px;
             font-size: 11px;
-            font-weight: 600;
-            animation: pulse 2s infinite;
+            font-weight: 700;
+            animation: badgePulse 2s infinite;
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+        @keyframes badgePulse {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
+            }
+            50% { 
+                transform: scale(1.1);
+                box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+            }
         }
 
         /* Main Content */
         .main-content {
             margin-left: 280px;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             min-height: 100vh;
             flex: 1;
+            position: relative;
         }
 
         .main-content.expanded {
@@ -217,8 +394,8 @@
         /* Top Header */
         .top-header {
             height: 80px;
-            background: rgba(30, 41, 59, 0.8);
-            backdrop-filter: blur(20px);
+            background: rgba(30, 41, 59, 0.85);
+            backdrop-filter: blur(30px);
             border-bottom: 1px solid var(--glass-border);
             display: flex;
             align-items: center;
@@ -227,6 +404,7 @@
             position: sticky;
             top: 0;
             z-index: 999;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
 
         .header-left {
@@ -241,21 +419,50 @@
             color: var(--light);
             font-size: 24px;
             cursor: pointer;
-            padding: 8px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
+            padding: 10px;
+            border-radius: 12px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .toggle-sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .toggle-sidebar:hover::before {
+            left: 100%;
         }
 
         .toggle-sidebar:hover {
             background: rgba(255, 255, 255, 0.1);
+            transform: rotate(180deg);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
         }
 
         .page-title {
             font-size: 24px;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--light), var(--gray-light));
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--light), var(--primary-light));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            animation: titleShimmer 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleShimmer {
+            from {
+                background-position: 0% 50%;
+            }
+            to {
+                background-position: 100% 50%;
+            }
         }
 
         .header-right {
@@ -268,25 +475,54 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 8px 12px;
-            border-radius: 12px;
+            padding: 8px 16px;
+            border-radius: 16px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+        }
+
+        .user-menu::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .user-menu:hover::before {
+            left: 100%;
         }
 
         .user-menu:hover {
             background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
         }
 
         .user-avatar {
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 10px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .user-menu:hover .user-avatar {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.5);
         }
 
         .user-info {
@@ -307,6 +543,18 @@
         /* Content Area */
         .content-area {
             padding: 32px;
+            animation: contentAppear 0.6s ease-out;
+        }
+
+        @keyframes contentAppear {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Dashboard Stats */
@@ -320,25 +568,15 @@
         .stat-card {
             background: linear-gradient(135deg, var(--glass) 0%, var(--glass-dark) 100%);
             border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 24px;
+            border-radius: 24px;
+            padding: 28px;
             backdrop-filter: blur(20px);
-            box-shadow: var(--shadow-lg);
-            transition: all 0.3s ease;
+            box-shadow: var(--shadow-xl);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
-            animation: fadeInUp 0.6s ease;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            animation: cardAppear 0.6s ease-out;
+            cursor: pointer;
         }
 
         .stat-card::before {
@@ -348,29 +586,81 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--success));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .stat-card:hover::before {
+            transform: scaleX(1);
         }
 
         .stat-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes cardAppear {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         .stat-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
 
         .stat-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 24px;
             background: rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s;
+        }
+
+        .stat-card:hover .stat-icon {
+            transform: scale(1.15) rotate(5deg);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .stat-card:hover .stat-icon::before {
+            animation: iconShine 0.6s ease;
+        }
+
+        @keyframes iconShine {
+            0% {
+                transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            }
+            100% {
+                transform: translateX(100%) translateY(100%) rotate(45deg);
+            }
         }
 
         .stat-info {
@@ -378,28 +668,89 @@
         }
 
         .stat-value {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 4px;
-            background: linear-gradient(135deg, var(--light), var(--gray-light));
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            background: linear-gradient(135deg, var(--light), var(--primary-light));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover .stat-value {
+            transform: scale(1.1);
         }
 
         .stat-label {
             font-size: 14px;
             color: rgba(255, 255, 255, 0.7);
+            font-weight: 500;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 12px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 3px;
+            transition: width 1s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: progressShine 2s infinite;
+        }
+
+        @keyframes progressShine {
+            0% {
+                left: -100%;
+            }
+            100% {
+                left: 100%;
+            }
         }
 
         /* Content Sections */
         .content-section {
             background: linear-gradient(135deg, var(--glass) 0%, var(--glass-dark) 100%);
             border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 24px;
+            border-radius: 24px;
+            padding: 28px;
             backdrop-filter: blur(20px);
-            box-shadow: var(--shadow-lg);
+            box-shadow: var(--shadow-xl);
             margin-bottom: 32px;
+            animation: sectionSlide 0.6s ease-out;
+            transition: all 0.3s ease;
+        }
+
+        .content-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes sectionSlide {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         .section-header {
@@ -411,8 +762,8 @@
 
         .section-title {
             font-size: 20px;
-            font-weight: 600;
-            background: linear-gradient(135deg, var(--light), var(--gray-light));
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--light), var(--primary-light));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -423,30 +774,55 @@
         }
 
         .btn {
-            padding: 12px 24px;
+            padding: 14px 24px;
             border: none;
-            border-radius: 12px;
+            border-radius: 14px;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
         }
 
         .btn-primary {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
         }
 
         .btn-success {
             background: linear-gradient(135deg, var(--success), var(--success-dark));
             color: white;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
         }
 
         /* Modal Styles */
@@ -462,18 +838,43 @@
             justify-content: center;
             align-items: center;
             backdrop-filter: blur(10px);
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { 
+                opacity: 0;
+                backdrop-filter: blur(0px);
+            }
+            to { 
+                opacity: 1;
+                backdrop-filter: blur(10px);
+            }
         }
 
         .modal-content {
             background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
             border: 1px solid var(--glass-border);
-            border-radius: 20px;
+            border-radius: 24px;
             padding: 32px;
             max-width: 600px;
             width: 90%;
             max-height: 90vh;
             overflow-y: auto;
             box-shadow: var(--shadow-xl);
+            animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         .modal-header {
@@ -486,7 +887,7 @@
         .modal-title {
             font-size: 24px;
             font-weight: 700;
-            background: linear-gradient(135deg, var(--light), var(--gray-light));
+            background: linear-gradient(135deg, var(--light), var(--primary-light));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -497,12 +898,14 @@
             color: var(--light);
             font-size: 24px;
             cursor: pointer;
-            padding: 4px;
-            border-radius: 6px;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
         }
 
         .close-modal:hover {
             background: rgba(255, 255, 255, 0.1);
+            transform: rotate(90deg);
         }
 
         .form-group {
@@ -512,7 +915,8 @@
         .form-label {
             display: block;
             margin-bottom: 8px;
-            font-weight: 500;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
         }
 
         .form-input {
@@ -523,11 +927,15 @@
             border-radius: 12px;
             color: var(--light);
             font-size: 16px;
+            transition: all 0.3s ease;
         }
 
         .form-input:focus {
             outline: none;
             border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.08);
         }
 
         .form-row {
@@ -543,11 +951,34 @@
         }
 
         /* Test Creation Styles */
+        .questions-container {
+            margin: 20px 0;
+        }
+
         .question-container {
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
             padding: 20px;
             margin-bottom: 20px;
+            transition: all 0.3s ease;
+            animation: questionSlide 0.3s ease;
+        }
+
+        @keyframes questionSlide {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .question-container:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--primary);
         }
 
         .question-header {
@@ -560,15 +991,23 @@
         .question-number {
             font-weight: 600;
             color: var(--primary);
+            font-size: 16px;
         }
 
         .remove-question {
             background: var(--danger);
             color: white;
             border: none;
-            padding: 8px 12px;
+            padding: 8px 16px;
             border-radius: 8px;
             cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .remove-question:hover {
+            background: var(--danger-dark);
+            transform: scale(1.05);
         }
 
         .option-row {
@@ -579,12 +1018,24 @@
             padding: 12px;
             background: rgba(255, 255, 255, 0.03);
             border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .option-row:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateX(5px);
         }
 
         .option-checkbox {
             width: 20px;
             height: 20px;
             accent-color: var(--primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option-checkbox:hover {
+            transform: scale(1.2);
         }
 
         .option-input {
@@ -594,6 +1045,13 @@
             border: 1px solid var(--glass-border);
             border-radius: 8px;
             color: var(--light);
+            transition: all 0.3s ease;
+        }
+
+        .option-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            transform: translateY(-2px);
         }
 
         .add-option {
@@ -605,6 +1063,14 @@
             cursor: pointer;
             text-align: center;
             margin-top: 8px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .add-option:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            border-color: var(--primary);
         }
 
         .add-question {
@@ -617,23 +1083,55 @@
             width: 100%;
             font-weight: 600;
             margin-top: 20px;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .add-question:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
         }
 
         /* Tab Content */
         .tab-content {
             display: none;
+            animation: tabFadeIn 0.5s ease;
         }
 
         .tab-content.active {
             display: block;
         }
 
+        @keyframes tabFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         /* Data Tables */
         .data-table {
             width: 100%;
             background: var(--glass);
-            border-radius: 12px;
+            border-radius: 16px;
             overflow: hidden;
+            animation: tableSlide 0.5s ease;
+            border: 1px solid var(--glass-border);
+        }
+
+        @keyframes tableSlide {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         .table-header {
@@ -651,27 +1149,36 @@
             padding: 16px 20px;
             text-align: left;
             border-bottom: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
         }
 
         th {
             background: rgba(255, 255, 255, 0.05);
             font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        tr {
+            transition: all 0.3s ease;
         }
 
         tr:hover {
             background: rgba(255, 255, 255, 0.03);
+            transform: translateX(5px);
         }
 
         .status-badge {
-            padding: 4px 8px;
-            border-radius: 12px;
+            padding: 6px 12px;
+            border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
+            transition: all 0.3s ease;
         }
 
         .status-badge.active {
             background: rgba(16, 185, 129, 0.2);
             color: #10b981;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
         }
 
         .status-badge.inactive {
@@ -684,13 +1191,15 @@
             border: none;
             color: var(--light);
             cursor: pointer;
-            padding: 6px;
-            border-radius: 6px;
+            padding: 8px;
+            border-radius: 8px;
             margin: 0 2px;
+            transition: all 0.3s ease;
         }
 
         .btn-icon:hover {
             background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.1);
         }
 
         /* Toast Notifications */
@@ -711,7 +1220,13 @@
             gap: 12px;
             backdrop-filter: blur(10px);
             margin-bottom: 12px;
-            animation: slideInRight 0.3s ease;
+            animation: toastSlideIn 0.3s ease;
+            transition: all 0.3s ease;
+            min-width: 300px;
+        }
+
+        .toast:hover {
+            transform: translateX(-5px);
         }
 
         .toast.success {
@@ -726,7 +1241,7 @@
             border-left: 4px solid var(--info);
         }
 
-        @keyframes slideInRight {
+        @keyframes toastSlideIn {
             from {
                 opacity: 0;
                 transform: translateX(100%);
@@ -737,6 +1252,99 @@
             }
         }
 
+        /* Loading Animation */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            backdrop-filter: blur(10px);
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(255, 255, 255, 0.6);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .empty-state i {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        /* Loading states */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .loading-spinner-small {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        /* Error states */
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin: 10px 0;
+            color: #ef4444;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Success states */
+        .success-message {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin: 10px 0;
+            color: #10b981;
+            animation: pulseSuccess 2s infinite;
+        }
+
+        @keyframes pulseSuccess {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Responsive Design */
         @media (max-width: 768px) {
             .sidebar {
                 transform: translateX(-100%);
@@ -757,54 +1365,93 @@
             .form-row {
                 grid-template-columns: 1fr;
             }
+            
+            .top-header {
+                padding: 0 16px;
+            }
+            
+            .content-area {
+                padding: 16px;
+            }
         }
 
-        /* Empty state */
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: rgba(255, 255, 255, 0.6);
+        /* Additional Premium Effects */
+        .premium-glow {
+            position: relative;
         }
 
-        .empty-state i {
-            font-size: 48px;
-            margin-bottom: 16px;
-            opacity: 0.5;
+        .premium-glow::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary), var(--success), var(--primary));
+            border-radius: inherit;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        /* Loading states */
-        .loading {
-            opacity: 0.6;
-            pointer-events: none;
+        .premium-glow:hover::after {
+            opacity: 0.3;
         }
 
-        .loading-spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
+        .floating-animation {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+
+        .ripple-effect {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ripple-effect::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
             border-radius: 50%;
-            border-top-color: var(--primary);
-            animation: spin 1s ease-in-out infinite;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Error states */
-        .error-message {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            border-radius: 8px;
-            padding: 12px;
-            margin: 10px 0;
-            color: #ef4444;
+        .ripple-effect:active::after {
+            width: 300px;
+            height: 300px;
         }
     </style>
 </head>
 <body>
-    <!-- CSRF Token - Django template tag'larini JavaScript bilan almashtirish -->
+    <!-- Premium Background -->
+    <div class="premium-bg">
+        <div class="gradient-orbs">
+            <div class="gradient-orb orb-1"></div>
+            <div class="gradient-orb orb-2"></div>
+            <div class="gradient-orb orb-3"></div>
+        </div>
+        <div class="animated-grid"></div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- CSRF Token -->
     <input type="hidden" id="csrf-token" name="csrfmiddlewaretoken" value="">
     
     <div class="app-container">
@@ -815,7 +1462,7 @@
                     <div class="logo-icon">
                         <i class='bx bx-brain'></i>
                     </div>
-                    <div class="logo-text">Test Pro</div>
+                    <div class="logo-text">Admin Panel</div>
                 </div>
             </div>
 
@@ -876,7 +1523,7 @@
                         <i class='bx bx-menu'></i>
                     </button>
                     <div class="page-title">
-                        <h1 id="pageTitle">Dashboard</h1>
+                        <h1 id="pageTitle" class="text-gradient-animated">Dashboard</h1>
                     </div>
                 </div>
 
@@ -895,8 +1542,8 @@
             <div class="content-area">
                 <!-- Dashboard Tab -->
                 <div id="dashboard" class="tab-content active">
-                    <div class="dashboard-stats">
-                        <div class="stat-card">
+                    <div class="dashboard-stats stagger-animation">
+                        <div class="stat-card card-hover premium-glow">
                             <div class="stat-header">
                                 <div class="stat-icon">
                                     <i class='bx bx-user'></i>
@@ -906,9 +1553,12 @@
                                     <div class="stat-label">O'quvchilar</div>
                                 </div>
                             </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 75%"></div>
+                            </div>
                         </div>
 
-                        <div class="stat-card">
+                        <div class="stat-card card-hover premium-glow">
                             <div class="stat-header">
                                 <div class="stat-icon">
                                     <i class='bx bx-file'></i>
@@ -918,9 +1568,12 @@
                                     <div class="stat-label">Testlar</div>
                                 </div>
                             </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 60%"></div>
+                            </div>
                         </div>
 
-                        <div class="stat-card">
+                        <div class="stat-card card-hover premium-glow">
                             <div class="stat-header">
                                 <div class="stat-icon">
                                     <i class='bx bx-check-circle'></i>
@@ -930,9 +1583,12 @@
                                     <div class="stat-label">Faol Testlar</div>
                                 </div>
                             </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 45%"></div>
+                            </div>
                         </div>
 
-                        <div class="stat-card">
+                        <div class="stat-card card-hover premium-glow">
                             <div class="stat-header">
                                 <div class="stat-icon">
                                     <i class='bx bx-bar-chart'></i>
@@ -942,10 +1598,13 @@
                                     <div class="stat-label">Bajarilgan Test</div>
                                 </div>
                             </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 85%"></div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="content-section">
+                    <div class="content-section card-hover">
                         <div class="section-header">
                             <div class="section-title">So'nggi Faoliyat</div>
                         </div>
@@ -960,11 +1619,11 @@
 
                 <!-- Students Tab -->
                 <div id="students" class="tab-content">
-                    <div class="content-section">
+                    <div class="content-section card-hover">
                         <div class="section-header">
                             <div class="section-title">O'quvchilar Boshqaruvi</div>
                             <div class="section-actions">
-                                <button class="btn btn-primary" onclick="openModal('newStudentModal')">
+                                <button class="btn btn-primary ripple-effect" onclick="openNewStudentModal()">
                                     <i class='bx bx-user-plus'></i> Yangi O'quvchi
                                 </button>
                             </div>
@@ -980,7 +1639,7 @@
                                             <th>ID</th>
                                             <th>Ism</th>
                                             <th>Familya</th>
-                                            <th>Login</th>
+                                            <th>Guruh</th>
                                             <th>Holati</th>
                                             <th>Amallar</th>
                                         </tr>
@@ -1003,11 +1662,11 @@
 
                 <!-- Tests Tab -->
                 <div id="tests" class="tab-content">
-                    <div class="content-section">
+                    <div class="content-section card-hover">
                         <div class="section-header">
                             <div class="section-title">Testlar Boshqaruvi</div>
                             <div class="section-actions">
-                                <button class="btn btn-primary" onclick="openModal('newTestModal')">
+                                <button class="btn btn-primary ripple-effect" onclick="openNewTestModal()">
                                     <i class='bx bx-plus'></i> Yangi Test
                                 </button>
                             </div>
@@ -1046,7 +1705,7 @@
 
                 <!-- Results Tab -->
                 <div id="results" class="tab-content">
-                    <div class="content-section">
+                    <div class="content-section card-hover">
                         <div class="section-header">
                             <div class="section-title">Test Natijalar</div>
                         </div>
@@ -1083,7 +1742,7 @@
 
                 <!-- Ranking Tab -->
                 <div id="ranking" class="tab-content">
-                    <div class="content-section">
+                    <div class="content-section card-hover">
                         <div class="section-header">
                             <div class="section-title">O'quvchilar Reytingi</div>
                         </div>
@@ -1155,13 +1814,13 @@
                     <!-- Questions will be added here dynamically -->
                 </div>
 
-                <button type="button" class="add-question" onclick="addQuestion()">
+                <button type="button" class="add-question ripple-effect" onclick="addQuestion()">
                     <i class='bx bx-plus'></i> Yangi Savol Qo'shish
                 </button>
 
                 <div class="form-actions">
                     <button type="button" class="btn" onclick="closeModal('newTestModal')" style="background: rgba(255,255,255,0.1);">Bekor Qilish</button>
-                    <button type="submit" class="btn btn-primary" id="testSubmitBtn">
+                    <button type="submit" class="btn btn-primary ripple-effect" id="testSubmitBtn">
                         <span class="btn-text">Testni Saqlash</span>
                     </button>
                 </div>
@@ -1191,6 +1850,11 @@
                     </div>
                 </div>
 
+                <div class="form-group">
+                    <label class="form-label">Guruh</label>
+                    <input type="text" class="form-input" id="studentGroup" placeholder="Guruh nomi">
+                </div>
+
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label">Login</label>
@@ -1198,7 +1862,7 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label">Parol</label>
-                        <input type="password" class="form-input" id="studentPassword" placeholder="O'quvchi uchun parol">
+                        <input type="password" class="form-input" id="studentPassword" placeholder="O'quvchi uchun parol" required>
                         <small style="color: var(--gray); font-size: 12px; margin-top: 5px; display: block;">
                             Tahrirlashda parolni o'zgartirmasangiz, bo'sh qoldiring
                         </small>
@@ -1207,7 +1871,7 @@
 
                 <div class="form-actions">
                     <button type="button" class="btn" onclick="closeModal('newStudentModal')" style="background: rgba(255,255,255,0.1);">Bekor Qilish</button>
-                    <button type="submit" class="btn btn-success" id="studentSubmitBtn">
+                    <button type="submit" class="btn btn-success ripple-effect" id="studentSubmitBtn">
                         <span class="btn-text">O'quvchini Saqlash</span>
                     </button>
                 </div>
@@ -1227,9 +1891,9 @@
             ranking: []
         };
 
-        // API URL lar - To'g'ri formatda
+        // API URLs - To'g'ri API URL lari
         const API_URLS = {
-            createStudent: '/api/create-student-with-login/',
+            createStudent: '/api/create-student/',
             createTest: '/api/create-test/',
             getStudents: '/api/get-students/',
             getTests: '/api/get-tests/',
@@ -1241,8 +1905,7 @@
             updateTest: '/api/update-test/',
             getStudent: '/api/get-student/',
             getTest: '/api/get-test/',
-            logout: '/logout/',
-            setAdminSession: '/api/set-admin-session/'
+            logout: '/logout/'
         };
 
         // Initialize App
@@ -1251,11 +1914,13 @@
         });
 
         function initializeApp() {
-            // CSRF tokenni olish
-            getCSRFTokenFromCookie();
+            // Hide loading overlay
+            setTimeout(() => {
+                document.getElementById('loadingOverlay').style.display = 'none';
+            }, 1000);
             
-            // Admin sessionini o'rnatish (demo uchun)
-            setAdminSession();
+            // CSRF token
+            getCSRFTokenFromCookie();
             
             initEventListeners();
             addQuestion(); // Start with one question
@@ -1266,12 +1931,11 @@
             loadResults();
             loadRanking();
             
-            // Set admin name from localStorage or default
-            const adminName = localStorage.getItem('adminName') || 'Admin';
-            document.getElementById('adminName').textContent = adminName;
+            // Set admin name
+            document.getElementById('adminName').textContent = "Admin";
         }
 
-        // CSRF tokenni cookie'dan olish
+        // CSRF token from cookie
         function getCSRFTokenFromCookie() {
             const name = 'csrftoken';
             let cookieValue = null;
@@ -1292,29 +1956,6 @@
             }
             
             return cookieValue;
-        }
-
-        // Admin sessionini o'rnatish
-        async function setAdminSession() {
-            try {
-                const response = await fetch(API_URLS.setAdminSession, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': getCSRFToken()
-                    },
-                    body: JSON.stringify({
-                        is_admin: true,
-                        admin_name: 'Admin User'
-                    })
-                });
-                
-                if (response.ok) {
-                    console.log('Admin session set successfully');
-                }
-            } catch (error) {
-                console.error('Error setting admin session:', error);
-            }
         }
 
         function initEventListeners() {
@@ -1357,25 +1998,18 @@
                 });
             });
 
-            // Mobile menu toggle
-            if (window.innerWidth <= 768) {
-                document.querySelector('.toggle-sidebar').addEventListener('click', function() {
-                    document.getElementById('sidebar').classList.toggle('mobile-open');
-                });
-            }
-
             // Real-time validation
             document.getElementById('username').addEventListener('input', function() {
                 validateUsername(this.value);
             });
         }
 
-        // CSRF token olish
+        // CSRF token
         function getCSRFToken() {
             return document.getElementById('csrf-token').value;
         }
 
-        // Logout funksiyasi
+        // Logout
         function logout() {
             if (confirm('Tizimdan chiqishni xohlaysizmi?')) {
                 document.getElementById('logout-form').submit();
@@ -1419,7 +2053,7 @@
                 button.classList.add('loading');
                 const btnText = button.querySelector('.btn-text');
                 if (btnText) {
-                    btnText.innerHTML = '<span class="loading-spinner"></span> Yuklanmoqda...';
+                    btnText.innerHTML = '<span class="loading-spinner-small"></span> Yuklanmoqda...';
                 }
                 button.disabled = true;
             } else {
@@ -1433,7 +2067,7 @@
             }
         }
 
-        // O'quvchilarni yuklash
+        // Load students
         async function loadStudents() {
             try {
                 const response = await fetch(API_URLS.getStudents);
@@ -1454,7 +2088,7 @@
             }
         }
 
-        // Testlarni yuklash
+        // Load tests
         async function loadTests() {
             try {
                 const response = await fetch(API_URLS.getTests);
@@ -1475,7 +2109,7 @@
             }
         }
 
-        // Natijalarni yuklash
+        // Load results
         async function loadResults() {
             try {
                 const response = await fetch(API_URLS.getResults);
@@ -1495,7 +2129,7 @@
             }
         }
 
-        // Reytingni yuklash
+        // Load ranking
         async function loadRanking() {
             try {
                 const response = await fetch(API_URLS.getRanking);
@@ -1562,18 +2196,22 @@
         }
 
         // Modal Functions
+        function openNewStudentModal() {
+            resetStudentForm();
+            openModal('newStudentModal');
+        }
+
+        function openNewTestModal() {
+            resetTestForm();
+            openModal('newTestModal');
+        }
+
         function openModal(modalId) {
             document.getElementById(modalId).style.display = 'flex';
         }
 
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
-            // Reset form when closing modal
-            if (modalId === 'newStudentModal') {
-                resetStudentForm();
-            } else if (modalId === 'newTestModal') {
-                resetTestForm();
-            }
         }
 
         // Reset forms
@@ -1584,6 +2222,13 @@
             document.getElementById('studentSubmitBtn').querySelector('.btn-text').textContent = 'O\'quvchini Saqlash';
             document.querySelector('#newStudentModal .modal-title').textContent = 'Yangi O\'quvchi Qo\'shish';
             document.getElementById('studentPassword').placeholder = 'O\'quvchi uchun parol';
+            document.getElementById('studentPassword').required = true;
+            
+            // Clear errors
+            clearFieldError('firstName');
+            clearFieldError('lastName');
+            clearFieldError('username');
+            clearFieldError('studentPassword');
         }
 
         function resetTestForm() {
@@ -1726,11 +2371,12 @@
                 isValid = false;
             }
             
+            // Password validation - only required for new students
             if (!studentId && !password) {
                 showFieldError('studentPassword', 'Yangi o\'quvchi uchun parol maydoni to\'ldirilishi shart!');
                 isValid = false;
-            } else if (password && password.length < 6) {
-                showFieldError('studentPassword', 'Parol kamida 6 ta belgidan iborat bo\'lishi kerak!');
+            } else if (password && password.length < 4) {
+                showFieldError('studentPassword', 'Parol kamida 4 ta belgidan iborat bo\'lishi kerak!');
                 isValid = false;
             }
             
@@ -1802,12 +2448,13 @@
             return isValid;
         }
 
-        // O'quvchi yaratish
+        // Create student
         async function createStudent() {
             if (!validateStudentForm()) return;
             
             const familya = document.getElementById('lastName').value.trim();
             const ism = document.getElementById('firstName').value.trim();
+            const group = document.getElementById('studentGroup').value.trim();
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('studentPassword').value;
 
@@ -1824,6 +2471,7 @@
                     body: JSON.stringify({
                         familya: familya,
                         ism: ism,
+                        group: group,
                         username: username,
                         password: password
                     })
@@ -1835,7 +2483,7 @@
                     showToast(`"${familya} ${ism}" o'quvchi muvaffaqiyatli qo'shildi!`, 'success');
                     closeModal('newStudentModal');
                     
-                    // O'quvchilar ro'yxatini yangilash
+                    // Refresh students list
                     loadStudents();
                 } else {
                     const errorMessage = data.error || 'Xatolik yuz berdi!';
@@ -1849,12 +2497,13 @@
             }
         }
 
-        // O'quvchini tahrirlash
+        // Update student
         async function updateStudent(id) {
             if (!validateStudentForm()) return;
             
             const familya = document.getElementById('lastName').value.trim();
             const ism = document.getElementById('firstName').value.trim();
+            const group = document.getElementById('studentGroup').value.trim();
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('studentPassword').value;
 
@@ -1865,6 +2514,7 @@
                 const updateData = {
                     familya: familya,
                     ism: ism,
+                    group: group,
                     username: username
                 };
 
@@ -1888,7 +2538,7 @@
                     showToast(`"${familya} ${ism}" o'quvchi muvaffaqiyatli yangilandi!`, 'success');
                     closeModal('newStudentModal');
                     
-                    // O'quvchilar ro'yxatini yangilash
+                    // Refresh students list
                     loadStudents();
                 } else {
                     const errorMessage = data.error || 'Xatolik yuz berdi!';
@@ -1902,7 +2552,7 @@
             }
         }
 
-        // Test yaratish
+        // Create test
         async function createTest() {
             if (!validateTestForm()) return;
             
@@ -1910,7 +2560,7 @@
             const maxPoints = document.getElementById('maxPoints').value;
             const timeLimit = document.getElementById('timeLimit').value;
 
-            // Savollarni yig'ish
+            // Collect questions
             const questions = [];
             const questionElements = document.querySelectorAll('.question-container');
             
@@ -1958,7 +2608,7 @@
                     showToast(`"${testName}" testi muvaffaqiyatli yaratildi!`, 'success');
                     closeModal('newTestModal');
                     
-                    // Testlar ro'yxatini yangilash
+                    // Refresh tests list
                     loadTests();
                 } else {
                     const errorMessage = data.error || 'Xatolik yuz berdi!';
@@ -1972,7 +2622,7 @@
             }
         }
 
-        // Testni tahrirlash
+        // Update test
         async function updateTest(id) {
             if (!validateTestForm()) return;
             
@@ -1980,7 +2630,7 @@
             const maxPoints = document.getElementById('maxPoints').value;
             const timeLimit = document.getElementById('timeLimit').value;
 
-            // Savollarni yig'ish
+            // Collect questions
             const questions = [];
             const questionElements = document.querySelectorAll('.question-container');
             
@@ -2028,7 +2678,7 @@
                     showToast(`"${testName}" testi muvaffaqiyatli yangilandi!`, 'success');
                     closeModal('newTestModal');
                     
-                    // Testlar ro'yxatini yangilash
+                    // Refresh tests list
                     loadTests();
                 } else {
                     const errorMessage = data.error || 'Xatolik yuz berdi!';
@@ -2042,7 +2692,7 @@
             }
         }
 
-        // O'quvchini o'chirish
+        // Delete student
         async function deleteStudent(id) {
             if (confirm(`O'quvchi #${id} ni o'chirishni xohlaysizmi?`)) {
                 try {
@@ -2068,7 +2718,7 @@
             }
         }
 
-        // Testni o'chirish
+        // Delete test
         async function deleteTest(id) {
             if (confirm(`Test #${id} ni o'chirishni xohlaysizmi?`)) {
                 try {
@@ -2094,7 +2744,7 @@
             }
         }
 
-        // O'quvchini tahrirlash uchun ma'lumotlarni olish
+        // Edit student
         async function editStudent(id) {
             try {
                 const response = await fetch(`${API_URLS.getStudent}${id}/`);
@@ -2105,19 +2755,21 @@
                 if (data.success && data.student) {
                     const student = data.student;
                     
-                    // Formni to'ldirish
+                    // Fill form
                     document.getElementById('editStudentId').value = student.id;
                     document.getElementById('firstName').value = student.ism || '';
                     document.getElementById('lastName').value = student.familya || '';
+                    document.getElementById('studentGroup').value = student.group || '';
                     document.getElementById('username').value = student.username || '';
                     document.getElementById('studentPassword').placeholder = 'Parolni o\'zgartirish uchun kiriting';
+                    document.getElementById('studentPassword').required = false;
                     
-                    // Modal sarlavhasini o'zgartirish
+                    // Change modal title
                     document.querySelector('#newStudentModal .modal-title').textContent = 'O\'quvchini Tahrirlash';
                     document.getElementById('studentSubmitBtn').setAttribute('data-original-text', 'O\'quvchini Yangilash');
                     document.getElementById('studentSubmitBtn').querySelector('.btn-text').textContent = 'O\'quvchini Yangilash';
                     
-                    // Modalni ochish
+                    // Open modal
                     openModal('newStudentModal');
                 } else {
                     showToast('O\'quvchi ma\'lumotlarini olishda xatolik!', 'error');
@@ -2128,7 +2780,7 @@
             }
         }
 
-        // Testni tahrirlash uchun ma'lumotlarni olish
+        // Edit test
         async function editTest(id) {
             try {
                 const response = await fetch(`${API_URLS.getTest}${id}/`);
@@ -2139,13 +2791,13 @@
                 if (data.success && data.test) {
                     const test = data.test;
                     
-                    // Asosiy ma'lumotlarni to'ldirish
+                    // Fill basic info
                     document.getElementById('editTestId').value = test.id;
                     document.getElementById('testName').value = test.title || '';
                     document.getElementById('maxPoints').value = test.max_score || 100;
                     document.getElementById('timeLimit').value = test.time_limit || 60;
                     
-                    // Savollarni to'ldirish
+                    // Fill questions
                     document.getElementById('questionsContainer').innerHTML = '';
                     appState.questionCount = 0;
                     
@@ -2171,12 +2823,12 @@
                         addQuestion();
                     }
                     
-                    // Modal sarlavhasini o'zgartirish
+                    // Change modal title
                     document.querySelector('#newTestModal .modal-title').textContent = 'Testni Tahrirlash';
                     document.getElementById('testSubmitBtn').setAttribute('data-original-text', 'Testni Yangilash');
                     document.getElementById('testSubmitBtn').querySelector('.btn-text').textContent = 'Testni Yangilash';
                     
-                    // Modalni ochish
+                    // Open modal
                     openModal('newTestModal');
                 } else {
                     showToast('Test ma\'lumotlarini olishda xatolik!', 'error');
@@ -2187,7 +2839,7 @@
             }
         }
 
-        // Jadval yangilash funksiyalari
+        // Update tables
         function updateStudentsTable() {
             const studentsTable = document.getElementById('studentsTable');
             
@@ -2212,7 +2864,7 @@
                         <td>#${student.id}</td>
                         <td>${student.ism}</td>
                         <td>${student.familya}</td>
-                        <td>${student.username || '-'}</td>
+                        <td>${student.group || '-'}</td>
                         <td><span class="status-badge ${student.is_online ? 'active' : 'inactive'}">${student.is_online ? 'Faol' : 'Nofaol'}</span></td>
                         <td>
                             <button class="btn-icon" title="Tahrirlash" onclick="editStudent(${student.id})">
@@ -2261,9 +2913,6 @@
                             </button>
                             <button class="btn-icon" title="O'chirish" onclick="deleteTest(${test.id})">
                                 <i class='bx bx-trash'></i>
-                            </button>
-                            <button class="btn-icon" title="Ko'rish" onclick="viewTest(${test.id})">
-                                <i class='bx bx-show'></i>
                             </button>
                         </td>
                     </tr>
@@ -2338,12 +2987,6 @@
             rankingTable.innerHTML = tableHTML;
         }
 
-        // Action Functions
-        function viewTest(id) {
-            showToast(`Test #${id} ko'rib chiqilmoqda...`, 'info');
-            // Bu yerda testni ko'rish sahifasiga o'tish logikasi qo'shishingiz mumkin
-        }
-
         // Toast Notifications
         function showToast(message, type = 'success') {
             const toastContainer = document.getElementById('toastContainer');
@@ -2353,7 +2996,6 @@
             const icons = {
                 'success': 'bx-check-circle',
                 'error': 'bx-error-circle',
-                'warning': 'bx-error-circle',
                 'info': 'bx-info-circle'
             };
             
